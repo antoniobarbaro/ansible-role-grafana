@@ -1,0 +1,32 @@
+---
+# tasks file for grafana
+- name: Install grafana repository
+  yum_repository:
+    name: grafana
+    description: grafana packagecloud repository
+    baseurl: https://packagecloud.io/grafana/stable/el/6/$basearch
+    gpgkey: https://packagecloud.io/gpg.key https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana
+    gpgcheck: yes
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    sslverify: yes
+
+
+- name: Install required packages
+  yum: state=latest name={{ item }}
+  with_items:
+    - fontconfig
+    - freetype
+    - urw-fonts
+
+- name: install grafana
+  yum:
+    name: grafana
+    state: latest
+    update_cache: yes
+
+- name: enable and start grafana service
+  systemd:
+    name: grafana-server
+    state: started
+    enabled: yes
+
