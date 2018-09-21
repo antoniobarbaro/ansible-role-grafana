@@ -30,3 +30,9 @@
     state: started
     enabled: yes
 
+- name: firewall enable port 3000
+  firewalld:
+    port: 3000/tcp
+    permanent: true
+    state: enabled  
+  notify: restarted firewalld 
